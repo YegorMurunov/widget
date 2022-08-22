@@ -101,7 +101,6 @@
 		    // get the mouse cursor position at startup:
 		    pos3 = e.clientX;
 		    pos4 = e.clientY;
-		    document.querySelector('.video-widget').style.position = 'absolute';
 		    // call a function whenever the cursor moves:
 		    document.onmouseup = (e) => {
 		    	let x2 = e.clientX;
@@ -137,7 +136,6 @@
 		    /* stop moving when mouse button is released:*/
 		    document.onmouseup = null;
 		    document.onmousemove = null;
-		    document.querySelector('.video-widget').style.position = 'fixed';
 		    setTimeout(() => {
 		    	console.log(opened)
 		    	if ( opened ) {
