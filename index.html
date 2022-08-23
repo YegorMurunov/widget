@@ -7,27 +7,6 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
 </head>
 <body>
-		<div class="content">
-			<h1>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tenetur non dolores eveniet culpa adipisci ipsam. Asperiores eum accusantium esse, quasi commodi incidunt distinctio porro nihil, cumque rerum amet quis soluta.
-			Eaque, voluptatibus aliquid maiores sapiente ipsam vero natus quia, dolorem praesentium modi architecto expedita et, cum aut. Vitae esse dolorum, porro, hic dolor nihil! Dignissimos aut quia ratione doloribus est!
-			Praesentium numquam dignissimos magnam cumque sapiente quidem rerum beatae tempore aspernatur amet sed saepe, laudantium exercitationem, unde labore veritatis illum voluptatibus dicta repellat rem quas nam libero inventore. Commodi, suscipit?
-			Ipsam libero sed rem, amet, quis, nulla a eveniet vitae aperiam error consequatur, iure numquam magni illo earum nemo ea explicabo eaque culpa vero nihil doloribus qui ut assumenda ratione.
-			Accusantium porro est reiciendis aut, animi. Nesciunt quos ducimus quas omnis nulla ratione, ipsum at. Adipisci vitae perspiciatis quod fugiat quia nihil veniam ipsa beatae vero voluptatum. Doloribus, corporis, laborum.</h1>
-		</div>
-		<div class="content">
-			<h1>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tenetur non dolores eveniet culpa adipisci ipsam. Asperiores eum accusantium esse, quasi commodi incidunt distinctio porro nihil, cumque rerum amet quis soluta.
-			Eaque, voluptatibus aliquid maiores sapiente ipsam vero natus quia, dolorem praesentium modi architecto expedita et, cum aut. Vitae esse dolorum, porro, hic dolor nihil! Dignissimos aut quia ratione doloribus est!
-			Praesentium numquam dignissimos magnam cumque sapiente quidem rerum beatae tempore aspernatur amet sed saepe, laudantium exercitationem, unde labore veritatis illum voluptatibus dicta repellat rem quas nam libero inventore. Commodi, suscipit?
-			Ipsam libero sed rem, amet, quis, nulla a eveniet vitae aperiam error consequatur, iure numquam magni illo earum nemo ea explicabo eaque culpa vero nihil doloribus qui ut assumenda ratione.
-			Accusantium porro est reiciendis aut, animi. Nesciunt quos ducimus quas omnis nulla ratione, ipsum at. Adipisci vitae perspiciatis quod fugiat quia nihil veniam ipsa beatae vero voluptatum. Doloribus, corporis, laborum.</h1>
-		</div>
-		<div class="content">
-			<h1>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tenetur non dolores eveniet culpa adipisci ipsam. Asperiores eum accusantium esse, quasi commodi incidunt distinctio porro nihil, cumque rerum amet quis soluta.
-			Eaque, voluptatibus aliquid maiores sapiente ipsam vero natus quia, dolorem praesentium modi architecto expedita et, cum aut. Vitae esse dolorum, porro, hic dolor nihil! Dignissimos aut quia ratione doloribus est!
-			Praesentium numquam dignissimos magnam cumque sapiente quidem rerum beatae tempore aspernatur amet sed saepe, laudantium exercitationem, unde labore veritatis illum voluptatibus dicta repellat rem quas nam libero inventore. Commodi, suscipit?
-			Ipsam libero sed rem, amet, quis, nulla a eveniet vitae aperiam error consequatur, iure numquam magni illo earum nemo ea explicabo eaque culpa vero nihil doloribus qui ut assumenda ratione.
-			Accusantium porro est reiciendis aut, animi. Nesciunt quos ducimus quas omnis nulla ratione, ipsum at. Adipisci vitae perspiciatis quod fugiat quia nihil veniam ipsa beatae vero voluptatum. Doloribus, corporis, laborum.</h1>
-		</div>
 	<div class="video-widget" data-state="default">
 		<div class="video-widget__container getreview-widget">
 
@@ -46,6 +25,33 @@
 	</style>
 
 	<script>
+		const isMobile = {
+		    Android: function () {
+		        return navigator.userAgent.match(/Android/i);
+		    },
+		    BlackBerry: function () {
+		        return navigator.userAgent.match(/BlackBerry/i);
+		    },
+		    iOS: function () {
+		        return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+		    },
+		    Opera: function () {
+		        return navigator.userAgent.match(/Opera Mini/i);
+		    },
+		    Windows: function () {
+		        return navigator.userAgent.match(/IEMobile/i);
+		    },
+		    any: function () {
+		        return (
+		                isMobile.Android()
+		                || isMobile.BlackBerry()
+		                || isMobile.iOS()
+		                || isMobile.Opera()
+		                || isMobile.Windows()
+		                );
+		    }
+		};
+
 		$(document).ready(function() {
 		var e = $(".video-widget"),
 			lastTime = 0,
@@ -77,26 +83,65 @@
 		dragElement(document.querySelector('.video-widget'));
 
 		function dragElement(elmnt) {
-		  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-		  if (document.getElementById(elmnt.id + "header")) {
-		    /* if present, the header is where you move the DIV from:*/
-		    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-		  } else {
-		    /* otherwise, move the DIV from anywhere inside the DIV:*/
-		    elmnt.onmousedown = (e) => {
+		  var pos1 = 0,
+		  	pos2 = 0, 
+		  	pos3 = 0, 
+		  	pos4 = 0;
+		
+		if ( isMobile.any() ) {
+			elmnt.ontouchstart = (e) => {
+				let x1 = e.targetTouches[0].clientX;
+				let y1 = e.targetTouches[0].clientY;
+				dragMouseDown(e,x1,y1);
+
+				function dragMouseDown(e,x1,y1) {
+				  	if ( document.querySelector('.video-widget').getAttribute('data-state') == 'opened' ) {
+						opened = true;
+					} else {
+						opened = false;
+					}
+				    /* e = e || window.event; */
+				    /* // get the mouse cursor position at startup: */
+				    pos3 = e.touches[0].clientX;
+				    pos4 = e.touches[0].clientY;
+				    /* // call a function whenever the cursor moves: */
+				    document.ontouchend = (e) => {
+		    			document.ontouchend = null;
+		    			document.ontouchmove = null;
+						return;
+				    }
+				    document.ontouchmove = (e) => {
+				    	elementDrag(e)
+				    };
+				 }
+
+				 function elementDrag(e) {
+
+				    /* e = e || window.event; */
+				    /* // calculate the new cursor position: */
+				    pos1 = pos3 -e.touches[0].clientX;
+				    pos2 = pos4 - e.touches[0].clientY;
+				    pos3 = e.touches[0].clientX;
+				    pos4 = e.touches[0].clientY;
+				    /* // set the element's new position: */
+				    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+				    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+				  }
+			}
+		}
+		else {
+			elmnt.onmousedown = (e) => {
 		    	let x1 = e.clientX;
-					let y1 = e.clientY;
+				let y1 = e.clientY;
 		    	dragMouseDown(e,x1,y1);
-		    };
-		  }
+	    	};
 
 		  function dragMouseDown(e,x1,y1) {
-		  	console.log('mouseDown')
 		  	if ( document.querySelector('.video-widget').getAttribute('data-state') == 'opened' ) {
-					opened = true;
-				} else {
-					opened = false;
-				}
+				opened = true;
+			} else {
+				opened = false;
+			}
 		    e = e || window.event;
 		    // get the mouse cursor position at startup:
 		    pos3 = e.clientX;
@@ -119,7 +164,6 @@
 		  }
 
 		  function elementDrag(e) {
-		  	console.log('drag')
 
 		    e = e || window.event;
 		    // calculate the new cursor position:
@@ -137,7 +181,6 @@
 		    document.onmouseup = null;
 		    document.onmousemove = null;
 		    setTimeout(() => {
-		    	console.log(opened)
 		    	if ( opened ) {
 		    		document.querySelector('.video-widget').setAttribute("data-state", "opened");
 		    		a.currentTime = lastTime;
@@ -149,6 +192,7 @@
 		    	}
 		    },0)
 		  }
+		}
 		}
 
 		});
