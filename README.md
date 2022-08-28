@@ -1,2 +1,3 @@
 # widget
-## link: https://yegormurunov.github.io/widget/
+## Author: https://yegormurunov.gq/
+### demo: https://yegormurunov.github.io/widget/
