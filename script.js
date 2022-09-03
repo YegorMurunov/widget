@@ -29,9 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	widget.querySelector(".video-widget__close").onclick = (e) => {
-		e.preventDefault();
 		e.stopPropagation();
-		return !widget.getAttribute('data-state') == 'default' ? widget.remove() : closeWidget();
+		return widget.getAttribute('data-state') == 'default' ? widget.remove() : closeWidget();
 	}
 
 	widget.querySelector(".video-widget__button").onclick = (e) => {
@@ -57,9 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		widget.querySelector(".video-widget__button").onclick = null;
 
 		widget.querySelector(".video-widget__close").ontouchstart = (e) => {
-			e.preventDefault();
 			e.stopPropagation();
-			return !widget.getAttribute('data-state') == 'default' ? widget.remove() : closeWidget();
+			return widget.getAttribute('data-state') == 'default' ? widget.remove() : closeWidget();
 		}
 
 		widget.querySelector(".video-widget__button").ontouchstart = (e) => {
@@ -105,6 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
 					x: x1,
 					y: y1
 				}
+				document.body.classList.add('lock');
 				dragMouseDown(e, x1, y1);
 
 				function dragMouseDown(e, x1, y1) {
@@ -120,6 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
 					document.ontouchend = (e) => {
 						document.ontouchend = null;
 						document.ontouchmove = null;
+						document.body.classList.remove('lock');
 						if ( touchStart.x == touchPosition.x && touchStart.y == touchPosition.y ) {
 							opened ? closeWidget() : (e.preventDefault(), openWidget());
 						}
